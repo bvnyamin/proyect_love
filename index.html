@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Para el amor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <!-- Background Layers -->
+      <div class="sky"></div>
+      <div class="stars"></div>
+      <div class="clouds-container" id="clouds"></div>
+
+      <!-- Game Elements -->
+      <div class="scene">
+        <!-- Heart Chests -->
+        <div class="heart-chest chest-1">
+          <div class="chest-base"></div>
+          <div class="chest-lid"></div>
+          <div class="chest-heart"></div>
+        </div>
+        <div class="heart-chest chest-2">
+          <div class="chest-base"></div>
+          <div class="chest-lid"></div>
+          <div class="chest-heart"></div>
+        </div>
+
+        <!-- Tree -->
+        <div class="tree-container">
+          <div class="pixel-tree">
+            <div class="trunk"></div>
+            <div class="leaves"></div>
+          </div>
+        </div>
+
+        <!-- Enhanced Ground Layer -->
+        <div class="ground-layer">
+          <div class="grass-blades"></div>
+          <div class="grass-top"></div>
+          <div class="grass-mid"></div>
+          <div class="dirt-bottom"></div>
+        </div>
+      </div>
+
+      <!-- UI Overlay -->
+      <div class="ui-layer">
+        <h1 class="main-title">Para el amor</h1>
+
+        <div class="message-box">
+          <p id="custom-message">
+            Te amo con todo mi corazón, espero te guste cada sorpresa que tengo
+            para tí <3
+          </p>
+        </div>
+
+        <div class="timer-container">
+          <div class="timer-label">Tiempo juntos:</div>
+          <div id="timer" class="timer-display">
+            <div class="time-unit">
+              <span id="days">00</span>
+              <span class="label">Días</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-unit">
+              <span id="hours">00</span>
+              <span class="label">Hrs</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-unit">
+              <span id="minutes">00</span>
+              <span class="label">Min</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-unit">
+              <span id="seconds">00</span>
+              <span class="label">Seg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Elements -->
+      <div id="hearts-container"></div>
+      <div id="sparkles-container"></div>
+      <div id="butterflies-container"></div>
+      <div id="petals-container"></div>
+      <div id="stars-container"></div>
+      <div id="fireflies-container"></div>
+
+      <!-- Static Decorative Elements -->
+      <div class="love-potion potion-1"></div>
+      <div class="love-potion potion-2"></div>
+      <div class="pixel-rose rose-1"></div>
+      <div class="pixel-rose rose-2"></div>
+      <div class="pixel-rose rose-3"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1159 @@
+:root {
+  --sky-top: #87ceeb;
+  --sky-bottom: #e0f6ff;
+  --grass-green: #57c446;
+  --dirt-brown: #8b4513;
+  --heart-red: #ff4d4d;
+  --text-color: #ffffff;
+  --ui-bg: rgba(0, 0, 0, 0.7);
+  --border-color: #cfcfcf;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Press Start 2P", monospace;
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    #1a1a2e,
+    #16213e,
+    #87ceeb
+  ); /* Darker top for space/stars */
+  height: 100vh;
+  width: 100vw;
+  color: var(--text-color);
+  image-rendering: pixelated;
+}
+
+.game-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- Background & Atmosphere --- */
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  /* Soft gradient is okay for sky, but let's add some banding for retro feel? */
+  background: linear-gradient(
+    to bottom,
+    #0f0f23 0%,
+    #2b3252 40%,
+    #87ceeb 80%,
+    #e0f6ff 100%
+  );
+}
+
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: 0;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0)),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0, 0, 0, 0));
+  background-size: 200px 200px;
+  opacity: 0.5;
+}
+
+.clouds-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pixel-cloud {
+  position: absolute;
+  background: #fff;
+  width: 10px;
+  height: 10px;
+  /* Blocky Cloud Shape using box-shadow */
+  box-shadow:
+    10px 0 #fff,
+    20px 0 #fff,
+    30px 0 #fff,
+    0 10px #fff,
+    10px 10px #fff,
+    20px 10px #fff,
+    30px 10px #fff,
+    40px 10px #fff,
+    10px 20px #edeaea,
+    20px 20px #edeaea,
+    30px 20px #edeaea; /* Slight shading bottom row */
+  opacity: 0.9;
+  animation: drift linear infinite;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-100px);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+/* --- Scene Elements --- */
+.scene {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* --- Heart Chests --- */
+.heart-chest {
+  position: absolute;
+  bottom: 75px;
+  width: 40px;
+  height: 32px;
+  z-index: 7;
+}
+
+.chest-1 {
+  left: 10%;
+  animation: chest-glow 3s ease-in-out infinite;
+}
+
+.chest-2 {
+  right: 25%;
+  animation: chest-glow 3s ease-in-out infinite 1.5s;
+}
+
+@keyframes chest-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(255, 105, 180, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(255, 105, 180, 0.8));
+  }
+}
+
+.chest-base {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 20px;
+  background: #8b4513;
+  border: 3px solid #654321;
+  box-shadow:
+    inset 2px 2px 0 0 #a0522d,
+    inset -2px -2px 0 0 #5d3a1a;
+}
+
+.chest-lid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 16px;
+  background: #a0522d;
+  border: 3px solid #654321;
+  box-shadow:
+    inset 2px 2px 0 0 #cd853f,
+    2px 2px 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.chest-heart {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: #ff1493;
+  clip-path: polygon(
+    10% 20%,
+    30% 0%,
+    50% 20%,
+    70% 0%,
+    90% 20%,
+    90% 40%,
+    70% 60%,
+    50% 80%,
+    30% 60%,
+    10% 40%
+  );
+  animation: chest-heart-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes chest-heart-pulse {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* --- Enhanced Ground Layer --- */
+.ground-layer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 10;
+}
+
+/* Grass Blades - Individual blades sticking up */
+.grass-blades {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 8px,
+    #57c446 8px,
+    #57c446 10px,
+    transparent 10px,
+    transparent 16px,
+    #4caf50 16px,
+    #4caf50 18px,
+    transparent 18px,
+    transparent 24px,
+    #45a036 24px,
+    #45a036 26px
+  );
+  animation: grass-blade-sway 2s ease-in-out infinite;
+  z-index: 11;
+}
+
+@keyframes grass-blade-sway {
+  0%,
+  100% {
+    transform: skewX(0deg);
+  }
+  50% {
+    transform: skewX(1deg);
+  }
+}
+
+.grass-top {
+  position: absolute;
+  top: 0;
+  height: 18px;
+  width: 100%;
+  background-color: var(--grass-green);
+  border-top: 4px solid #45a036;
+  background-image:
+    linear-gradient(90deg, #45a036 25%, transparent 25%),
+    linear-gradient(90deg, #4caf50 75%, transparent 75%);
+  background-size: 8px 100%;
+  animation: grass-sway 3s ease-in-out infinite;
+}
+
+.grass-mid {
+  position: absolute;
+  top: 18px;
+  height: 12px;
+  width: 100%;
+  background-color: #3d8b2f;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #3d8b2f,
+    #3d8b2f 4px,
+    #2d6b1f 4px,
+    #2d6b1f 8px
+  );
+  border-top: 2px solid #2d6b1f;
+}
+
+.dirt-bottom {
+  position: absolute;
+  top: 30px;
+  height: calc(100% - 30px);
+  width: 100%;
+  background-color: var(--dirt-brown);
+  background-image:
+    linear-gradient(45deg, #5d4037 25%, transparent 25%),
+    linear-gradient(-45deg, #5d4037 25%, transparent 25%);
+  background-size: 16px 16px;
+  border-top: 4px solid #3e2723;
+}
+
+/* -- Pixel Tree -- */
+.tree-container {
+  position: absolute;
+  bottom: 76px;
+  right: 12%;
+  width: 240px;
+  height: 320px;
+}
+
+.pixel-tree {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.trunk {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 140px;
+  background-color: #5d4037;
+  /* Pixel texture for bark */
+  background-image: linear-gradient(
+    90deg,
+    transparent 50%,
+    rgba(0, 0, 0, 0.3) 50%
+  );
+  background-size: 8px 8px;
+  border-left: 4px solid #3e2723;
+  border-right: 4px solid #3e2723;
+}
+
+.leaves {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 180px;
+  /* Blocky Heart Shape Construction */
+  background: transparent;
+
+  /* Center Block */
+  box-shadow: 
+        /* Main Body (Pink) */
+    -40px 0 0 40px #ff69b4,
+    40px 0 0 40px #ff69b4,
+    0 40px 0 40px #ff69b4,
+    0 -20px 0 40px #ff69b4,
+    /* Shading (Darker Pink) */ -40px 40px 0 40px #c71585,
+    40px 40px 0 40px #c71585,
+    0 60px 0 20px #c71585,
+    /* Hard Outline / Texture (Optional, simplifies to just blocky shape by using squares) */
+    /* Let's try a simpler approach with just rectangle stacking via pseudo elements if box-shadow is too complex to visualize mentally */;
+  display: none; /* Hiding this approach to use the "block stack" below */
+}
+
+/* Rebuilding leaves with blocky divs to ensure "Terraria" look */
+.leaves {
+  display: block;
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 140px;
+  background: #ff69b4;
+
+  /* Hard Edges/No Radius */
+  /* Pixel steps using box-shadow to simulate "rounding" */
+  box-shadow: 
+        /* Top Left Hump */
+    -40px -40px 0 0 #ff69b4,
+    -40px -20px 0 0 #ff69b4,
+    -20px -40px 0 0 #ff69b4,
+    /* Top Right Hump */ 40px -40px 0 0 #ff69b4,
+    40px -20px 0 0 #ff69b4,
+    20px -40px 0 0 #ff69b4,
+    /* Bottom/Point */ 0 20px 0 0 #ff69b4,
+    0 40px 0 0 #ff69b4,
+    -20px 20px 0 0 #ff69b4,
+    20px 20px 0 0 #ff69b4,
+    /* Shading/Texture Blocks */ 10px 10px 0 0 #ff1493,
+    -30px -10px 0 0 #ffc0cb,
+    /* Highlight */ 30px 30px 0 0 #c71585; /* Shadow */
+
+  /* Texture pattern */
+  background-image:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%);
+  background-size: 20px 20px;
+}
+
+/* Extra loose leaves */
+.leaves::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #ff69b4;
+  box-shadow:
+    -60px 20px #ff69b4,
+    70px 10px #ff69b4,
+    -70px -30px #ff69b4,
+    60px -40px #ff69b4,
+    0 -70px #ff69b4;
+  animation: sway 2s infinite ease-in-out alternate;
+}
+
+@keyframes sway {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(2px);
+  }
+}
+
+/* --- UI Overlay --- */
+.ui-layer {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  background-color: var(--ui-bg);
+  padding: 2rem;
+
+  /* --- NEW UI REQUIRES --- */
+  border-radius: 0; /* No rounded corners */
+  border: 4px solid var(--border-color);
+  box-shadow: 6px 6px 0px #000; /* Hard shadow */
+  /* ---------------------- */
+
+  max-width: 90%;
+  width: 600px;
+  animation: float-ui 3s ease-in-out infinite;
+}
+
+@keyframes float-ui {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px); /* Reduced movement for "heavier" feel */
+  }
+}
+
+.main-title {
+  font-size: 2rem;
+  color: #ffb6c1;
+  text-shadow: 4px 4px 0 #000;
+  margin-bottom: 1.5rem;
+}
+
+.message-box {
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-size: 0.8rem;
+  text-shadow: 2px 2px 0 #000; /* Stronger shadow for readability */
+}
+
+/* Timer */
+.timer-container {
+  border-top: 4px solid var(--border-color); /* Hard border instead of dashed */
+  padding-top: 1.5rem;
+}
+
+.timer-label {
+  font-size: 0.7rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.timer-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.time-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-unit span:first-child {
+  font-size: 1.5rem;
+  color: #ffd700;
+  text-shadow: 3px 3px 0 000;
+}
+
+.time-unit .label {
+  font-size: 0.5rem;
+  margin-top: 8px; /* Slightly more space */
+  opacity: 1; /* Full opacity for pixel look */
+  text-shadow: 1px 1px 0 #000;
+}
+
+.separator {
+  font-size: 1.5rem;
+  color: #cfcfcf;
+  text-shadow: 2px 2px 0 #000;
+  padding-bottom: 15px;
+}
+
+/* --- Floating Hearts --- */
+#hearts-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.pixel-heart {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--heart-red);
+  /* Square heart using box-shadow pixel art */
+  box-shadow:
+    10px -10px 0 0 var(--heart-red),
+    20px 0 0 0 var(--heart-red),
+    0 10px 0 0 var(--heart-red),
+    10px 20px 0 0 var(--heart-red);
+  /* Reset other styles */
+  opacity: 1;
+  animation: floatUp linear forwards;
+}
+/* Note: The JS creates .pixel-heart. The box-shadow here relies on a 10px base unit. 
+   If JS sets width/height, it might scale weirdly. 
+   Since JS allows random sizes, we should probably stick to a simpler shape 
+   or ensure the JS creates a container and we scale the container.
+   Let's keep the clip-path for hearts for now as it scales better with JS dynamic sizing,
+   but make it stepped if possible. Actually, let's just make it a square rotated 45deg 
+   with ::before/::after to be a "cleaner" heart but pixelated? 
+   The clip-path polygon from before was okay, but maybe too smooth.
+   Let's use a "staircase" polygon for pixel look. */
+
+.pixel-heart {
+  box-shadow: none; /* Reset the box-shadow attempt */
+  clip-path: polygon(
+    10% 20%,
+    30% 0%,
+    50% 20%,
+    70% 0%,
+    90% 20%,
+    90% 40%,
+    70% 60%,
+    50% 80%,
+    30% 60%,
+    10% 40%
+  );
+  /* Simple approximation of pixels */
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) scale(1);
+    opacity: 0;
+  }
+}
+
+/* --- Sparkles/Stars Effect --- */
+#sparkles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
+  overflow: hidden;
+}
+
+.pixel-sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: #fff;
+  box-shadow:
+    6px 0 0 0 #fff,
+    0 6px 0 0 #fff,
+    6px 6px 0 0 #fff,
+    -6px 0 0 0 #fff,
+    0 -6px 0 0 #fff;
+  animation: sparkle linear forwards;
+}
+
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+}
+
+/* --- Butterflies --- */
+#butterflies-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 8;
+  overflow: hidden;
+}
+
+.pixel-butterfly {
+  position: absolute;
+  width: 16px;
+  height: 12px;
+  animation: butterfly-fly linear infinite;
+}
+
+.pixel-butterfly::before,
+.pixel-butterfly::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  background: #ff69b4;
+  box-shadow:
+    0 -4px 0 0 #ff1493,
+    0 4px 0 0 #c71585,
+    4px 0 0 0 #ffc0cb;
+}
+
+.pixel-butterfly::before {
+  left: 0;
+  animation: wing-flap 0.3s ease-in-out infinite;
+}
+
+.pixel-butterfly::after {
+  right: 0;
+  animation: wing-flap 0.3s ease-in-out infinite reverse;
+}
+
+@keyframes butterfly-fly {
+  0% {
+    transform: translate(-50px, 100vh) rotate(0deg);
+  }
+  25% {
+    transform: translate(20vw, 75vh) rotate(10deg);
+  }
+  50% {
+    transform: translate(50vw, 50vh) rotate(-10deg);
+  }
+  75% {
+    transform: translate(80vw, 25vh) rotate(5deg);
+  }
+  100% {
+    transform: translate(110vw, -50px) rotate(0deg);
+  }
+}
+
+@keyframes wing-flap {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.7);
+  }
+}
+
+/* --- Flower Petals --- */
+#petals-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 6;
+  overflow: hidden;
+}
+
+.pixel-petal {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #ffb6c1;
+  box-shadow:
+    4px 0 0 0 #ff69b4,
+    0 4px 0 0 #ffc0cb;
+  animation: petal-fall linear forwards;
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0.3;
+  }
+}
+
+/* --- Enhanced Clouds --- */
+.pixel-cloud {
+  position: absolute;
+  background: #fff;
+  width: 10px;
+  height: 10px;
+  /* Larger, more detailed cloud */
+  box-shadow:
+    10px 0 #fff,
+    20px 0 #fff,
+    30px 0 #fff,
+    40px 0 #fff,
+    50px 0 #fff,
+    0 10px #fff,
+    10px 10px #fff,
+    20px 10px #fff,
+    30px 10px #fff,
+    40px 10px #fff,
+    50px 10px #fff,
+    60px 10px #fff,
+    10px 20px #edeaea,
+    20px 20px #edeaea,
+    30px 20px #edeaea,
+    40px 20px #edeaea,
+    50px 20px #edeaea,
+    20px 30px #d3d3d3,
+    30px 30px #d3d3d3,
+    40px 30px #d3d3d3;
+  opacity: 0.85;
+  animation: drift linear infinite;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* --- Pulsing Hearts on Tree --- */
+.leaves {
+  animation: pulse-heart 2s ease-in-out infinite;
+}
+
+@keyframes pulse-heart {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+/* --- Twinkling Stars Enhancement --- */
+.stars {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* --- Floating UI Enhancement --- */
+.ui-layer {
+  animation:
+    float-ui 3s ease-in-out infinite,
+    glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow:
+      6px 6px 0px #000,
+      0 0 20px rgba(255, 182, 193, 0.3);
+  }
+  50% {
+    box-shadow:
+      6px 6px 0px #000,
+      0 0 40px rgba(255, 182, 193, 0.6);
+  }
+}
+
+/* --- Additional Heart Styles --- */
+.pixel-heart.large {
+  width: 20px;
+  height: 20px;
+}
+
+.pixel-heart.small {
+  width: 8px;
+  height: 8px;
+}
+
+.pixel-heart.spinning {
+  animation:
+    floatUp linear forwards,
+    spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Ground Animation --- */
+.grass-top {
+  animation: grass-sway 3s ease-in-out infinite;
+}
+
+@keyframes grass-sway {
+  0%,
+  100% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 4px 0;
+  }
+}
+
+/* --- Love Potions (Static Decorative Items) --- */
+.love-potion {
+  position: absolute;
+  bottom: 85px;
+  width: 24px;
+  height: 32px;
+  z-index: 8;
+  animation: potion-glow 2s ease-in-out infinite;
+}
+
+.potion-1 {
+  left: 15%;
+}
+
+.potion-2 {
+  right: 30%;
+}
+
+.love-potion::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  width: 16px;
+  height: 20px;
+  background: #ff1493;
+  border: 2px solid #8b008b;
+  box-shadow:
+    inset 2px 2px 0 0 #ff69b4,
+    inset -2px -2px 0 0 #c71585;
+}
+
+.love-potion::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 6px;
+  width: 12px;
+  height: 8px;
+  background: #8b008b;
+  border: 2px solid #4b0082;
+  border-bottom: none;
+}
+
+@keyframes potion-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(255, 20, 147, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(255, 20, 147, 0.8));
+  }
+}
+
+/* --- Pixel Roses --- */
+.pixel-rose {
+  position: absolute;
+  bottom: 75px;
+  width: 20px;
+  height: 28px;
+  z-index: 7;
+}
+
+.rose-1 {
+  left: 25%;
+}
+
+.rose-2 {
+  left: 60%;
+}
+
+.rose-3 {
+  right: 15%;
+}
+
+/* Rose flower */
+.pixel-rose::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 6px;
+  width: 8px;
+  height: 8px;
+  background: #dc143c;
+  box-shadow:
+    -4px 4px 0 0 #dc143c,
+    4px 4px 0 0 #dc143c,
+    0 8px 0 0 #dc143c,
+    -4px 8px 0 0 #8b0000,
+    4px 8px 0 0 #8b0000,
+    0 12px 0 0 #8b0000;
+  animation: rose-sway 3s ease-in-out infinite;
+}
+
+/* Rose stem */
+.pixel-rose::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 9px;
+  width: 2px;
+  height: 16px;
+  background: #228b22;
+  box-shadow: 2px 0 0 0 #228b22;
+}
+
+@keyframes rose-sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+/* --- Floating Stars Container --- */
+#stars-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 12;
+  overflow: hidden;
+}
+
+.floating-star {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #ffd700;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  animation: star-float linear forwards;
+}
+
+@keyframes star-float {
+  0% {
+    transform: translateY(100vh) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) rotate(360deg) scale(1);
+    opacity: 0;
+  }
+}
+
+/* --- Fireflies Container --- */
+#fireflies-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 14;
+  overflow: hidden;
+}
+
+.firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ffff00;
+  border-radius: 50%;
+  box-shadow:
+    0 0 8px #ffff00,
+    0 0 12px #ffff00;
+  animation: firefly-float linear infinite;
+}
+
+@keyframes firefly-float {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  25% {
+    transform: translate(20px, -30px);
+  }
+  50% {
+    transform: translate(-10px, -60px);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translate(30px, -90px);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, -120px);
+    opacity: 0;
+  }
+}
+
+/* --- Enhanced Hearts with Trails --- */
+.pixel-heart.with-trail::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  clip-path: inherit;
+  opacity: 0.3;
+  animation: heart-trail 0.5s ease-out infinite;
+}
+
+@keyframes heart-trail {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(20px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* --- Enhanced Tree with More Details --- */
+.tree-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 105, 180, 0.1) 0%,
+    transparent 70%
+  );
+  animation: tree-aura 4s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes tree-aura {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .main-title {
+    font-size: 1.5rem;
+  }
+  .tree-container {
+    right: -60px;
+    transform: scale(0.6);
+  }
+  .timer-display {
+    gap: 5px;
+  }
+  .pixel-cloud {
+    transform: scale(0.7);
+  }
+  .pixel-butterfly {
+    transform: scale(0.8);
+  }
+  .heart-chest {
+    transform: scale(0.7);
+  }
+  .chest-1 {
+    left: 5%;
+  }
+  .love-potion {
+    transform: scale(0.7);
+  }
+  .pixel-rose {
+    transform: scale(0.8);
+  }
+  .floating-star {
+    transform: scale(0.7);
+  }
+}
