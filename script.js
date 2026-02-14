@@ -1,18 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Configuración ---
-  // FECHA DE INICIO DE LA RELACIÓN
-  // Configurado para: 28 de Julio de 2025 a las 21:35
-  // Esto hará que HOY (13 de Feb 2026 20:50) marque exactamente: 199 días, 23 horas, 15 min
-  // Y seguirá contando hacia adelante sin reiniciarse al recargar.
-  const startDate = new Date(2025, 6, 28, 21, 35); // Mes 6 = Julio (0-indexado)
+  const startDate = new Date(2025, 6, 28, 21, 35);
 
-  // --- Timer Logic ---
   function updateTimer() {
     const now = new Date();
     const difference = now - startDate;
 
     if (difference < 0) {
-      // Future date case (countdown?) - or just show 0
       return;
     }
 
@@ -36,23 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   setInterval(updateTimer, 1000);
-  updateTimer(); // Initial call
-
-  // --- Floating Hearts Logic ---
+  updateTimer();
   const heartsContainer = document.getElementById("hearts-container");
 
   function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("pixel-heart");
 
-    // Random Position
     heart.style.left = Math.random() * 100 + "vw";
 
-    // Random Animation Duration (Speed)
-    const duration = Math.random() * 5 + 5; // 5s to 10s
+    const duration = Math.random() * 5 + 5;
     heart.style.animationDuration = duration + "s";
 
-    // Random Size with classes
     const sizeType = Math.random();
     if (sizeType < 0.3) {
       heart.classList.add("small");
@@ -60,17 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
       heart.classList.add("large");
     }
 
-    // Some hearts spin
     if (Math.random() > 0.7) {
       heart.classList.add("spinning");
     }
 
-    // Random Size
-    const size = Math.random() * 10 + 10; // 10px to 20px
+    const size = Math.random() * 10 + 10;
     heart.style.width = size + "px";
     heart.style.height = size + "px";
 
-    // Color variation (Reds, Pinks)
     const colors = ["#FF0000", "#FF69B4", "#FF1493", "#DC143C", "#FFB6C1"];
     heart.style.backgroundColor =
       colors[Math.floor(Math.random() * colors.length)];
